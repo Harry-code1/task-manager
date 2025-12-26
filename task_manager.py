@@ -21,11 +21,24 @@ def show_tasks(tasks):
         return
     for i, task in enumerate(tasks, start=1):
         status = "✓" if task["done"] else " "
-        print(f"{i}. [{status}] {task["title"]}")
+        due = task.get("due")
+
+        if due:
+            print(f"{i}. [{status}] {task["title"]} (Due: {due})")
+        else:
+            print(f"{i}. [{status}] {task['title']}")
 
 def add_task(tasks):
     title = input("Enter task title: ")
-    tasks.append({"title": title, "done": False})
+    due = input("Enter due date (YYYY-MM-DD) or leave blank: ")
+
+    if due.strip() == "":
+        due = None
+    tasks.append({
+        "title": title,
+        "done": False,
+        "due": due
+    })
     save_tasks(tasks)
     print("Task added.")
 
