@@ -1,4 +1,5 @@
 import json
+from operator import index
 from random import choice
 
 FILE_NAME = "tasks.json"
@@ -49,6 +50,27 @@ def complete_task(tasks):
     save_tasks(tasks)
     print("Task marked as complete.")
 
+def delete_task(tasks):
+    show_tasks(tasks)
+
+    if not tasks:
+        return
+
+    choice = input("Enter task number to delete: ")
+
+    if not choice.isdigit():
+        print("Please enter a valid number.")
+        return
+
+    index = int(choice) - 1
+    if index < 0 or index >= len(tasks):
+        print("The number is out of range.")
+        return
+
+    removed = tasks.pop(index)
+    save_tasks(tasks)
+    print(f"Deleted task: {removed["title"]}")
+
 def main():
     tasks = load_tasks()
 
@@ -57,7 +79,8 @@ def main():
         print("1. Show tasks")
         print("2. Add task")
         print("3. Complete task")
-        print("4. Exit")
+        print("4. Delete task")
+        print("5. Exit")
 
         choice = input("Choose and option: ")
 
@@ -68,6 +91,8 @@ def main():
         elif choice == "3":
             complete_task(tasks)
         elif choice == "4":
+            delete_task(tasks)
+        elif choice == "5":
             print("Goodbye!")
             break
         else:
